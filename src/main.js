@@ -9,6 +9,7 @@ import '@/assets/styles/reset.css'
 import '@/assets/styles/border.css'
 import '@/assets/styles/global.css'
 import '@/assets/styles/iconfont.css'
+import '@/assets/styles/vux-global.less'
 
 Vue.config.productionTip = false
 
