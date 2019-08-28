@@ -2,7 +2,7 @@
   <div class="home-wrapper">
     <home-header></home-header>
     <swiper
-      :list="demo03_list"
+      :list="swiperList"
        auto
        loop
        style="width:100%;"
@@ -11,32 +11,71 @@
        dots-class="dots"
        :aspect-ratio="37.5"
       ></swiper>
+      <icon-area :iconList="iconList"></icon-area>
+      <category-box class="mt20" :title="'热门推荐'">
+        <template v-for="item in recommendList">
+          <recommend-item :key="item.id" v-bind="item"></recommend-item>
+        </template>
+      </category-box>
+      <category-box class="mt20" :title="'周末旅游'">
+        <template v-for="item in weekendList">
+          <hot-sale :key="item.id" v-bind="item"></hot-sale>
+        </template>
+      </category-box>
+
   </div>
 </template>
 
 <script>
-import HomeHeader from '@/components/Home/Header'
 import { Swiper } from 'vux'
+import axios from '../../service/httpRequest'
+import { IMG_LIST } from './CONSTANTS'
+import HomeHeader from '@/components/Home/Header'
+import IconArea from '@/components/Home/IconArea'
+import CategoryBox from '@/components/Home/CategoryBox'
+import RecommendItem from '@/components/Home/RecommendItem'
+import HotSale from '@/components/Home/HotSale'
 
-const imgList = [
-  'http://mp-piao-admincp.qunarzz.com/mp_piao_admin_mp_piao_admin/admin/20193/87a224d0349d94a11e97f31aa1aba4f5.jpg_750x200_1f78af87.jpg',
-  'http://mp-piao-admincp.qunarzz.com/mp_piao_admin_mp_piao_admin/admin/20193/d7bbc21db442366a882e04ddc984669a.jpg_750x200_85e640d9.jpg',
-  'http://mp-piao-admincp.qunarzz.com/mp_piao_admin_mp_piao_admin/admin/20198/507e5e117c000e575f3987fcde8b6aba.jpg_750x200_fb0a1e1a.jpg'
-]
-
-const demoList = imgList.map((one, index) => ({
+const SwiperImgs = IMG_LIST.map((one, index) => ({
   url: 'javascript:',
   img: one
 }))
+
 export default {
   components: {
+    Swiper,
     HomeHeader,
-    Swiper
+    IconArea,
+    CategoryBox,
+    RecommendItem,
+    HotSale
   },
   data () {
     return {
-      demo03_list: demoList
+      swiperImgs: SwiperImgs,
+      iconList: [],
+      recommendList: [],
+      swiperList: [],
+      weekendList: []
     }
+  },
+  methods: {
+    async getHomeData () {
+      const data = await axios.get('/api/index.json')
+      console.log(data)
+      const { iconList, recommendList, swiperList, weekendList } = data.data
+      this.swiperList = swiperList.map(icon => {
+        icon.img = icon.imgUrl
+        icon.url = 'javascript:'
+        return icon
+      })
+      this.iconList = iconList
+      this.recommendList = recommendList
+      this.weekendList = weekendList
+    }
+  },
+  mounted () {
+    this.getHomeData()
   }
 }
 </script>
@@ -44,10 +83,5 @@ export default {
 <style lang="scss" scoped>
 .home-wrapper {
   height: 100%;
-
-  .dots {
-    background: red;
-    border: 10px solid red;
-  }
 }
 </style>
