@@ -34,6 +34,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/styles/variables.scss';
 .hot-sale {
+  padding: 10px 0;
   .cover-wrapper {
     overflow: hidden;
 

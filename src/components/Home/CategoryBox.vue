@@ -26,7 +26,8 @@ export default {
   .category-box-header {
     background: $COLOR_SHADOW_GREY;
     color: $COLOR_DARK;
-    padding: 8px;
+    padding: 8px 10px;
+    line-height: 1.8;
     font-size: 14px;
   }
 

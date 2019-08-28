@@ -1,17 +1,22 @@
 <template>
   <div class="icon-area">
-    <ul class="icons">
-      <li
-        class="icon-wrapper"
-        v-for="icon in iconList"
-        :key="icon.id"
-      >
-        <div class="icon">
-          <img :src="icon.imgUrl" alt="">
-        </div>
-        <p class="text">{{ icon.desc }}</p>
-      </li>
-    </ul>
+    <swiper :options="swiperOption">
+      <swiper-slide v-for="(page, index) in swiperList" :key="index">
+          <ul class="icons">
+            <li
+              class="icon-wrapper"
+              v-for="icon in page"
+              :key="icon.id"
+            >
+              <div class="icon">
+                <img :src="icon.imgUrl" alt="">
+              </div>
+              <p class="text">{{ icon.desc }}</p>
+            </li>
+          </ul>
+      </swiper-slide>
+      <div class="swiper-pagination" slot="pagination"></div>
+    </swiper>
   </div>
 </template>
 
@@ -22,6 +27,37 @@ export default {
       type: Array,
       required: true
     }
+  },
+  data () {
+    return {
+      swiperOption: {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        observeParents: true
+      }
+    }
+  },
+  computed: {
+    swiperList () {
+      const pages = []
+      const IconQuantityPerPage = 8
+      this.iconList.forEach((item, index) => {
+        const page = Math.floor(index / IconQuantityPerPage)
+        if (!pages[page]) {
+          pages[page] = []
+        }
+        pages[page].push(item)
+      })
+      console.log('pages,', pages)
+      return pages
+    }
+  },
+  mounted () {
+    // setInterval(() => {
+    //   console.log('simulate async data')
+    //   let swiperSlides = this.swiperSlides
+    //   if (swiperSlides.length < 10) swiperSlides.push(swiperSlides.length + 1)
+    // }, 3000)
   }
 }
 </script>
@@ -67,5 +103,25 @@ export default {
       }
     }
   }
+
+  .swiper-pagination-bullets {
+    bottom: 0;
+  }
+
+  .swiper-pagination {
+    position: relative;
+    top: 5px;
+    line-height: 2;
+  }
 }
+</style>
+
+<style lang="scss">
+  @import '../../assets/styles/variables.scss';
+
+  .icon-area {
+    .swiper-pagination-bullet-active {
+      background: $THEME_COLOR;
+    }
+  }
 </style>
