@@ -23,8 +23,15 @@ export default {
   },
   data () {
     return {
-      touchStatus: false
+      touchStatus: false,
+      firstElementOffsetTop: 0,
+      alphabetElementHeight: 0,
+      timer: null
     }
+  },
+  updated () {
+    this.firstElementOffsetTop = this.$refs['A'][0].offsetTop
+    this.alphabetElementHeight = this.$refs['A'][0].clientHeight
   },
   methods: {
     handleChange (letter) {
@@ -35,13 +42,18 @@ export default {
     },
     handleTouchMove (e) {
       if (this.touchStatus) {
-        const firstElementOffsetTop = this.$refs['A'][0].offsetTop
-        const alphabetElementHeight = this.$refs['A'][0].clientHeight
-        const touchY = e.touches[0].clientY - 86
-        const index = Math.floor((touchY - firstElementOffsetTop) / alphabetElementHeight)
-        if (index >= 0 && index < this.alphabet.length) {
-          this.$emit('on-change', this.alphabet[index])
+        if (this.timer) {
+          clearTimeout(this.timer)
         }
+        this.timer = setTimeout(() => {
+          const firstElementOffsetTop = this.firstElementOffsetTop
+          const alphabetElementHeight = this.alphabetElementHeight
+          const touchY = e.touches[0].clientY - 86
+          const index = Math.floor((touchY - firstElementOffsetTop) / alphabetElementHeight)
+          if (index >= 0 && index < this.alphabet.length) {
+            this.$emit('on-change', this.alphabet[index])
+          }
+        }, 16)
       }
     },
     handleTouchEnd () {

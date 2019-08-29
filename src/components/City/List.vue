@@ -61,7 +61,7 @@ export default {
     letter (newVal) {
       if (newVal) {
         const element = this.$refs[newVal][0]
-        this.scroll.scrollToElement(element, 500)
+        this.scroll.scrollToElement(element, 200)
       }
     }
   }
