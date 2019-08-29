@@ -3,6 +3,8 @@ import Router from 'vue-router'
 
 import Home from '@/Pages/home/Home'
 
+const City = () => import('@/pages/city/City')
+
 Vue.use(Router)
 
 export default new Router({
@@ -11,6 +13,11 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/city',
+      name: 'City',
+      component: City
     }
   ]
 })

@@ -1,13 +1,13 @@
 <template>
   <div class="home-header">
-    <i class="iconfont left-arrow"></i>
+    <!-- <i class="iconfont left-arrow"></i> -->
 
     <div class="search-bar">
       <i class="iconfont search"></i>
       <p class="input-placeholder">输入城市/景点/游玩主题</p>
     </div>
 
-    <div class="right-area">
+    <div class="right-area" @click="$emit('on-click')">
       <p class="location">三亚</p>
       <i class="iconfont down-triangle"></i>
     </div>

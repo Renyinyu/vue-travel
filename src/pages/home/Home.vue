@@ -1,6 +1,6 @@
 <template>
   <div class="home-wrapper">
-    <home-header></home-header>
+    <home-header @on-click="$router.push('/city')"></home-header>
     <swiper
       :list="swiperList"
        auto
