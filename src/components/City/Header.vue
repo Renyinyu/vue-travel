@@ -2,18 +2,32 @@
   <div class="city-header">
     <div class="first-row">
       <i class="iconfont left-arrow" @click="$emit('on-click-back')"></i>
-      <p class="title">城市选择</p>
+      <p class="title">选择城市</p>
     </div>
     <div class="search-bar">
-      <!-- <div class="search-input" contenteditable="true"></div> -->
-      <input type="text" class="search-input" placeholder="输入城市名或拼音">
+      <input
+        type="text"
+        v-model="searchContent"
+        class="search-input"
+        placeholder="输入城市名或拼音"
+      >
+        <!-- @input="handleInputChange" -->
     </div>
   </div>
 </template>
 
 <script>
 export default {
-
+  data () {
+    return {
+      searchContent: ''
+    }
+  },
+  watch: {
+    searchContent (newVal) {
+      this.$emit('on-change', newVal)
+    }
+  }
 }
 </script>
 

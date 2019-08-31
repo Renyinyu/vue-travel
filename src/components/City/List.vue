@@ -5,14 +5,19 @@
         <div class="category-title">当前城市</div>
         <div class="category-container">
           <div class="category-item">
-            <p class="category-item-text">北京</p>
+            <p class="category-item-text">{{ currentCity }}</p>
           </div>
         </div>
       </li>
       <li class="category">
         <div class="category-title">热门城市</div>
         <div class="category-container">
-          <div class="category-item" v-for="city in hotCities" :key="city.id">
+          <div
+            class="category-item"
+            v-for="city in hotCities"
+            :key="city.id"
+            @click="handleClick(city.name)"
+          >
             <p class="category-item-text">{{city.name}}</p>
           </div>
         </div>
@@ -24,7 +29,13 @@
         :ref="key"
       >
         <div class="category-title">{{ key }}</div>
-        <p class="city" v-for="city in category" :key="city.id">{{ city.name }}</p>
+        <p
+          class="city" v-for="city in category"
+          :key="city.id"
+          @click="handleClick(city.name)"
+        >
+          {{ city.name }}
+        </p>
       </li>
     </ul>
   </div>
@@ -45,6 +56,10 @@ export default {
     letter: {
       type: String,
       default: ''
+    },
+    currentCity: {
+      type: String,
+      default: '请选择'
     }
   },
   data () {
@@ -52,10 +67,17 @@ export default {
       scroll: null
     }
   },
+  methods: {
+    handleClick (city) {
+      this.$emit('on-click-city', city)
+    }
+  },
   mounted () {
     let wrapper = document.querySelector('.wrapper')
     // eslint-disable-next-line
-    this.scroll = new BScroll(wrapper)
+    this.scroll = new BScroll(wrapper, {
+      click: true
+    })
   },
   watch: {
     letter (newVal) {
@@ -113,7 +135,7 @@ export default {
     }
 
     .city {
-      padding: 4px;
+      padding: 4px 10px;
       line-height: 2;
       border-bottom: 1px solid #ccc;
       font-size: 13px;

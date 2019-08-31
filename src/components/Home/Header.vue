@@ -8,7 +8,7 @@
     </div>
 
     <div class="right-area" @click="$emit('on-click')">
-      <p class="location">三亚</p>
+      <p class="location">{{ city }}</p>
       <i class="iconfont down-triangle"></i>
     </div>
   </div>
@@ -16,7 +16,12 @@
 
 <script>
 export default {
-
+  props: {
+    city: {
+      type: String,
+      default: '请选择'
+    }
+  }
 }
 </script>
 

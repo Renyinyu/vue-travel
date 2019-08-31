@@ -1,6 +1,6 @@
 <template>
   <div class="home-wrapper">
-    <home-header @on-click="$router.push('/city')"></home-header>
+    <home-header @on-click="$router.push('/city')" :city="currentCity"></home-header>
     <swiper
       :list="swiperList"
        auto
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { Swiper } from 'vux'
 import axios from '../../service/httpRequest'
 import { IMG_LIST } from './CONSTANTS'
@@ -73,6 +74,9 @@ export default {
       this.recommendList = recommendList
       this.weekendList = weekendList
     }
+  },
+  computed: {
+    ...mapGetters(['currentCity'])
   },
   mounted () {
     this.getHomeData()
