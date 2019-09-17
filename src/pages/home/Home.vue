@@ -14,7 +14,11 @@
       <icon-area :iconList="iconList"></icon-area>
       <category-box class="mt20" :title="'热门推荐'">
         <template v-for="item in recommendList">
-          <recommend-item :key="item.id" v-bind="item"></recommend-item>
+          <recommend-item
+            :key="item.id"
+            v-bind="item"
+            @on-go-to-detail="handleGotoDetail(item.id)"
+          ></recommend-item>
         </template>
       </category-box>
       <category-box class="mt20" :title="'周末旅游'">
@@ -53,6 +57,7 @@ export default {
   },
   data () {
     return {
+      lastCity: '',
       swiperImgs: SwiperImgs,
       iconList: [],
       recommendList: [],
@@ -62,8 +67,13 @@ export default {
   },
   methods: {
     async getHomeData () {
-      const data = await axios.get('/api/index.json')
-      console.log(data)
+      const data = await axios({
+        url: '/api/index.json',
+        method: 'get',
+        params: {
+          city: this.currentCity
+        }
+      })
       const { iconList, recommendList, swiperList, weekendList } = data.data
       this.swiperList = swiperList.map(icon => {
         icon.img = icon.imgUrl
@@ -73,12 +83,28 @@ export default {
       this.iconList = iconList
       this.recommendList = recommendList
       this.weekendList = weekendList
+    },
+
+    handleGotoDetail (id) {
+      this.$router.push({
+        name: 'Detail',
+        params: {
+          id
+        }
+      })
     }
   },
   computed: {
     ...mapGetters(['currentCity'])
   },
+  activated () {
+    if (this.lastCity !== this.currentCity) {
+      this.lastCity = this.currentCity
+      this.getHomeData()
+    }
+  },
   mounted () {
+    this.lastCity = this.currentCity
     this.getHomeData()
   }
 }

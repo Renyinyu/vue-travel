@@ -8,7 +8,7 @@
     <div class="item-container">
       <p class="title">{{ title }}</p>
       <p class="description">{{ desc }}</p>
-      <p class="detail-btn">查看详情</p>
+      <p class="detail-btn" @click="$emit('on-go-to-detail')">查看详情</p>
     </div>
   </div>
 </template>

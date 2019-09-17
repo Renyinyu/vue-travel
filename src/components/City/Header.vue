@@ -11,7 +11,6 @@
         class="search-input"
         placeholder="输入城市名或拼音"
       >
-        <!-- @input="handleInputChange" -->
     </div>
   </div>
 </template>
